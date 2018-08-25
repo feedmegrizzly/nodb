@@ -25,7 +25,10 @@ class App extends Component {
 
   handleSubmit(event) {
     axios.get(`/api/weather?city=${this.state.userInput}`)
-      .then(weather => {
+    .then(weather => {
+        this.setState({
+          userInput: ''
+        })
         if (weather.data.message) {
           alert('City Not Found')
         } else {
@@ -55,14 +58,14 @@ class App extends Component {
         return (
           <div className="cityInfo" key={weather.name}>
             <div>
-            <h1>{weather.name}</h1>
+              <h1>{weather.name}</h1>
             </div>
             <div className="ptag">
-            <p>{weather.main.temp}</p>
+              <p>{weather.main.temp}</p>
             </div>
-              <div className="button">
+            <div className="button">
               <button className="x" onClick={() => { this.deleteWeather(weather.name) }}>x</button>
-              </div>
+            </div>
           </div>
         )
       })
@@ -73,13 +76,15 @@ class App extends Component {
           <img src="https://cdn172.picsart.com/228360378035212.png?r1024x1024" className="App-logo" alt="logo" />
           <h1 className="App-title">What's the weather?</h1>
           <form>
-            <input  type="text" className="inputLine" onChange={(e) => this.handleChange(e.target.value)} placeholder="Type city name here." />
+            <input type="text" className="inputLine" value={this.state.userInput} onChange={(e) => this.handleChange(e.target.value)} placeholder="Type city name here." />
             <button onClick={this.handleSubmit} type="submit">Submit</button>
           </form>
           <br />
           {weatherList}
         </header>
       </div>
+      
+      
     );
   }
 }
